@@ -1,3 +1,5 @@
+import { Slide, Tooltip, useScrollTrigger } from "@material-ui/core";
+
 import AppBar from "@material-ui/core/AppBar";
 import DarkIcon from "@material-ui/icons/Brightness4";
 import DialogModal from "./DialogModal";
@@ -7,14 +9,11 @@ import InstallPWA from "./InstallPWA";
 import LightIcon from "@material-ui/icons/Brightness7";
 import React from "react";
 import Toolbar from "@material-ui/core/Toolbar";
-import { Tooltip } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
+  root: {},
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -29,7 +28,15 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.default,
   },
 }));
-
+function HideOnScroll(props) {
+  const { children, window } = props;
+  const trigger = useScrollTrigger({ target: window ? window() : undefined });
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+}
 export default function ButtonAppBar(props) {
   const classes = useStyles();
   const [openInfo, setOpenInfo] = React.useState(false);
@@ -39,39 +46,45 @@ export default function ButtonAppBar(props) {
   };
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <img
-              src="./android-chrome-512x512.png"
-              alt="logo"
-              height="38"
-              className={classes.logoimg}
-            ></img>
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            {props.title}
-          </Typography>
-
-          <Tooltip title="Change Theme">
-            <IconButton color="inherit" onClick={props.changeTheme}>
-              {!props.isDark ? <DarkIcon></DarkIcon> : <LightIcon></LightIcon>}
+      <HideOnScroll>
+        <AppBar position="static">
+          <Toolbar variant="dense">
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <img
+                src="./android-chrome-512x512.png"
+                alt="logo"
+                height="38"
+                className={classes.logoimg}
+              ></img>
             </IconButton>
-          </Tooltip>
+            <Typography variant="h6" className={classes.title}>
+              {props.title}
+            </Typography>
 
-          <InstallPWA></InstallPWA>
-          <Tooltip title="About">
-            <IconButton color="inherit" onClick={handleClickOpen}>
-              <InfoIcon />
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-      </AppBar>
+            <Tooltip title="Change Theme">
+              <IconButton color="inherit" onClick={props.changeTheme}>
+                {!props.isDark ? (
+                  <DarkIcon></DarkIcon>
+                ) : (
+                  <LightIcon></LightIcon>
+                )}
+              </IconButton>
+            </Tooltip>
+
+            <InstallPWA></InstallPWA>
+            <Tooltip title="About">
+              <IconButton color="inherit" onClick={handleClickOpen}>
+                <InfoIcon />
+              </IconButton>
+            </Tooltip>
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
       <DialogModal open={openInfo} setOpen={setOpenInfo}></DialogModal>
     </div>
   );

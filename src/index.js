@@ -3,20 +3,24 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 
 import App from "./App";
+import { Provider } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
 import { SnackbarProvider } from "notistack";
+import store from "./Redux/store";
 
 ReactDOM.render(
   <React.StrictMode>
-    <SnackbarProvider
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "center",
-      }}
-    >
-      <App />
-    </SnackbarProvider>
+    <Provider store={store}>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <App />
+      </SnackbarProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -1,3 +1,5 @@
+import "./App.css";
+
 import * as serviceWorker from "./serviceWorker";
 
 import { Button, CssBaseline } from "@material-ui/core";
@@ -5,9 +7,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import BluePink from "./Themes/BluePink";
-import CyonYellow from "./Themes/CyonYellow";
-import Home from "./Containers/Home";
-import PinkPurple from "./Themes/PinkPurple";
+import MyApp from "./Containers/MyApp";
 import { useSnackbar } from "notistack";
 
 function App() {
@@ -90,7 +90,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Home changeTheme={changeTheme} isDark={darkMode} />
+      <MyApp changeTheme={changeTheme} isDark={darkMode}></MyApp>
     </ThemeProvider>
   );
 }

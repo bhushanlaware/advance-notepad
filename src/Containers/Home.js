@@ -1,4 +1,5 @@
 import AppBar from "../Components/AppBar";
+import Editor from "./Editor";
 import Footer from "../Components/Footer";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +11,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     minHeight: "100vh",
   },
+  main: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(2),
+  },
+  footer: {
+    padding: theme.spacing(3, 2),
+    marginTop: "auto",
+  },
 }));
 
 const Home = (props) => {
@@ -18,8 +27,7 @@ const Home = (props) => {
   return (
     <div className={classes.root}>
       <AppBar title={"My App"} {...props}></AppBar>
-
-      <Footer></Footer>
+      <Footer className={classes.footer}></Footer>
     </div>
   );
 };

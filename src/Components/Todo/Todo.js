@@ -1,4 +1,11 @@
-import { Box, Divider, Slide, TextField } from "@material-ui/core";
+import {
+  Box,
+  Divider,
+  ListItemIcon,
+  Slide,
+  TextField,
+} from "@material-ui/core";
+import { Edit, EditOutlined, RefreshOutlined } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 
 import DeleteIcon from "@material-ui/icons/HighlightOffOutlined";
@@ -10,7 +17,6 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
-import { RefreshOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,14 +34,16 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "line-through",
     color: "grey",
   },
+  listItem: {},
 }));
 
-export default function Todolist(props) {
+export default React.memo((props) => {
   const classes = useStyles();
   const [task, setTask] = useState("");
   const [current, setCurrent] = useState([]);
   const [completed, setCompleted] = useState([]);
   const { id } = props;
+  console.log("refresded", id);
   const clearAll = () => {
     setCurrent([]);
     setCompleted([]);
@@ -50,7 +58,7 @@ export default function Todolist(props) {
     localCompleted = localCompleted ? localCompleted : "[]";
     setCurrent(JSON.parse(localCurrent));
     setCompleted(JSON.parse(localCompleted));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     props.setClearAll(clearAll);
@@ -62,14 +70,21 @@ export default function Todolist(props) {
     localStorage.setItem("completed" + id, JSON.stringify([...completed]));
   }, [completed, current]);
 
-  const clickAudio = new Audio("click.mp3");
+  const clickAudio = new Audio("/sounds/click.mp3");
+  const successAudio = new Audio("/sounds/success.mp3");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setCurrent([...current, task]);
     setTask("");
   };
+  const handleEdit = (i) => {
+    setTask(current[i]);
+    handleDelete(i);
+  };
+
   const handleDone = (i) => {
-    clickAudio.play();
+    successAudio.play();
     const newCurrent = [...current];
     newCurrent.splice(i, 1);
     setCurrent(newCurrent);
@@ -116,13 +131,9 @@ export default function Todolist(props) {
             </Box>
             <List>
               {current.map((x, i) => (
-                <Slide direction="down" in={true}>
-                  <ListItem key={i}>
-                    <ListItemText
-                      style={{ paddingRight: "30px", overflowWrap: "anywhere" }}
-                      primary={x}
-                    />
-                    <ListItemSecondaryAction>
+                <Slide direction="right" in={true}>
+                  <ListItem key={i} className={classes.listItem}>
+                    <ListItemIcon>
                       <IconButton
                         edge="end"
                         aria-label="Completed"
@@ -130,6 +141,20 @@ export default function Todolist(props) {
                         onClick={() => handleDone(i)}
                       >
                         <DoneIcon />
+                      </IconButton>
+                    </ListItemIcon>
+                    <ListItemText
+                      style={{ paddingRight: "30px", overflowWrap: "anywhere" }}
+                      primary={x}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="Edit"
+                        color="warning.main"
+                        onClick={() => handleEdit(i)}
+                      >
+                        <EditOutlined />
                       </IconButton>
                       <IconButton
                         edge="end"
@@ -149,12 +174,7 @@ export default function Todolist(props) {
               {completed.map((x, i) => (
                 <Slide direction="up" in={true}>
                   <ListItem key={i}>
-                    <ListItemText
-                      style={{ paddingRight: "30px", overflowWrap: "anywhere" }}
-                      className={classes.completedList}
-                      primary={x}
-                    />
-                    <ListItemSecondaryAction>
+                    <ListItemIcon>
                       <IconButton
                         edge="end"
                         aria-label="Redo"
@@ -162,6 +182,13 @@ export default function Todolist(props) {
                       >
                         <RefreshOutlined />
                       </IconButton>
+                    </ListItemIcon>
+                    <ListItemText
+                      style={{ paddingRight: "30px", overflowWrap: "anywhere" }}
+                      className={classes.completedList}
+                      primary={x}
+                    />
+                    <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
                         aria-label="Delete"
@@ -179,4 +206,4 @@ export default function Todolist(props) {
       </Grid>
     </div>
   );
-}
+});

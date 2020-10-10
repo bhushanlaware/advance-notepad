@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, lazy } from "react";
 import {
   Redirect,
   Route,
@@ -10,17 +10,19 @@ import Board from "../Components/Todo/Board";
 import { Box } from "@material-ui/core";
 import Drawer from "../Components/Drawer";
 import Editor from "./Editor";
-import QuillEditor from "../Components/QuillEditor";
+import Library from "./Library";
 import { createBrowserHistory } from "history";
+import { saveAs } from "file-saver";
 
 const browserHistory = createBrowserHistory();
 
 class Book {
-  constructor(parent) {
-    this.id = Date.now();
-    this.title = "";
-    this.notes = "";
+  constructor(parent, title) {
+    this.id = Date.now().toString();
+    this.title = title;
+    this.notes = `<h1>${title}</h1>`;
     this.parent = parent;
+    this.childs = 0;
   }
 }
 
@@ -31,7 +33,6 @@ const TodoPage = () => {
     </Box>
   );
 };
-
 class MyApp extends Component {
   state = { notes: [], fileLocation: "", openNote: null };
 
@@ -41,37 +42,78 @@ class MyApp extends Component {
 
     this.setState({ fileLocation });
     if (fileLocation === "") {
-      const book = new Book("Main");
+      const book = new Book("Main", "My Book");
       this.setState({ notes: [book], openNote: book });
     }
   };
-
-  handleAddPage = (id) => {
-    const book = new Book(id);
-    this.setState({ notes: [book] });
+  handleKeyPress = (e) => {
+    //!Ctrl +S
+    if (e.ctrlKey && e.keyCode === 83) {
+      e.preventDefault();
+      const content = JSON.stringify(this.state.notes);
+      // var blob = new Blob([content], {
+      //   type: "application/json",
+      // });
+      // saveAs(blob, "notes.json");
+      localStorage.setItem("notes", JSON.stringify(this.state.notes));
+    }
+    //!Ctrl +N
+    if (e.ctrlKey && e.keyCode === 78) {
+      e.preventDefault();
+      console.log("New");
+    }
+    //!Ctrl+O
+    if (e.ctrlKey && e.keyCode === 79) {
+      e.preventDefault();
+      console.log("Open");
+    }
+  };
+  componentDidMount = () => {
+    document.addEventListener("keydown", this.handleKeyPress);
+    const localNotes = localStorage.getItem("notes") || "[]";
+    this.setState({ notes: JSON.parse(localNotes) });
+  };
+  componentWillUnmount = () => {
+    document.removeEventListener("keydown", this.handleKeyPress);
+  };
+  componentDidUpdate = () => {
+    localStorage.setItem("notes", JSON.stringify(this.state.notes));
+  };
+  handleAddPage = (parentId, title) => {
+    const book = new Book(parentId, title);
+    const newNotes = [...this.state.notes, book];
+    if (parentId !== "Main")
+      newNotes[newNotes.findIndex((x) => x.id === parentId)].childs++;
+    this.setState({ notes: newNotes });
+    return book.id;
   };
   handleDeletePage = (id) => {
-    this.setState({ notes: this.state.notes.filter((x) => x.id !== id) });
+    const newNotes = this.state.notes.filter((x) => x.id !== id);
+    const parentId = this.state.notes[
+      this.state.notes.findIndex((x) => x.id === id)
+    ].parent;
+    if (parentId !== "Main") {
+      newNotes[newNotes.findIndex((x) => x.id === parentId)].childs--;
+    }
+    this.setState({ notes: newNotes });
   };
 
-  handleRename = (id, title) => {
+  handleRename = (id, title, rewriteHeading = false) => {
+    if (title === "") return;
     const tempNotes = [...this.state.notes];
     const index = tempNotes.findIndex((x) => x.id === id);
+
     tempNotes[index].title = title;
     this.setState({ notes: tempNotes });
   };
   handleChange = (id, text) => {
     const tempNotes = [...this.state.notes];
     const index = tempNotes.findIndex((x) => x.id === id);
+    if (index < 0) return;
     tempNotes[index].notes = text;
     this.setState({ notes: tempNotes });
   };
-  handleOpenNote = (id) => {
-    const openNote = this.state.notes[
-      this.state.notes.findIndex((x) => x.id === id)
-    ];
-    this.setState({ openNote });
-  };
+
   render() {
     return (
       <>
@@ -88,10 +130,16 @@ class MyApp extends Component {
               <Route path="/todo" exact component={TodoPage}></Route>
               <Route
                 path="/notes"
-                render={() => (
+                exact
+                render={() => <Library notes={this.state.notes} />}
+              ></Route>
+              <Route
+                path="/notes/:id"
+                render={(props) => (
                   <Editor
-                    openNote={this.state.openNote}
+                    notes={this.state.notes}
                     onChange={this.handleChange}
+                    {...props}
                   />
                 )}
                 exact

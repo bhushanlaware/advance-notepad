@@ -26,90 +26,84 @@ export default function TodoCard(props) {
   const [editTitle, setEditTitle] = useState(false);
   const [mounted, setMounted] = useState(true);
   const { title, setTitle, id } = props;
-  const handleRemove = () => {
-    setMounted(false);
-  };
+
   let clearAll = () => {};
   let clearCompleted = () => {};
   return (
-    <Zoom
-      in={mounted}
-      mountOnEnter
-      unmountOnExit
-      onExited={() => {
-        props.removeCard(id);
-      }}
-    >
-      <Card className={classes.root}>
-        <CardContent>
-          {!editTitle ? (
-            <Box style={{ position: "relative" }}>
-              <Button
-                onClick={() => {
-                  setEditTitle(true);
-                }}
-              >
-                <Typography gutterBottom variant="h6" component="h6">
-                  {title}
-                </Typography>
-              </Button>
-              <IconButton className={classes.closeBtn} onClick={handleRemove}>
-                <CancelRounded></CancelRounded>
-              </IconButton>
-            </Box>
-          ) : (
-            <form
-              style={{ position: "relative" }}
-              required
-              autoComplete="off"
-              onSubmit={() => {
+    <Card className={classes.root}>
+      <CardContent>
+        {!editTitle ? (
+          <Box style={{ position: "relative" }}>
+            <Button
+              onClick={() => {
+                setEditTitle(true);
+              }}
+            >
+              <Typography gutterBottom variant="h6" component="h6">
+                {title}
+              </Typography>
+            </Button>
+            <IconButton
+              className={classes.closeBtn}
+              onClick={() => {
+                props.removeCard(id);
+              }}
+            >
+              <CancelRounded></CancelRounded>
+            </IconButton>
+          </Box>
+        ) : (
+          <form
+            style={{ position: "relative" }}
+            required
+            autoComplete="off"
+            onSubmit={() => {
+              setEditTitle(false);
+            }}
+          >
+            <TextField
+              id="standard-basic"
+              name="title"
+              fullWidth
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value, id);
+              }}
+            />
+            <IconButton
+              style={{
+                position: "absolute",
+                right: 0,
+                top: "-13px",
+              }}
+              onClick={() => {
                 setEditTitle(false);
               }}
             >
-              <TextField
-                id="standard-basic"
-                name="title"
-                fullWidth
-                value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value, id);
-                }}
-              />
-              <IconButton
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: "-13px",
-                }}
-                onClick={() => {
-                  setEditTitle(false);
-                }}
-              >
-                <CheckCircle style={{ color: "lightGreen" }}></CheckCircle>
-              </IconButton>
-            </form>
-          )}
+              <CheckCircle style={{ color: "lightGreen" }}></CheckCircle>
+            </IconButton>
+          </form>
+        )}
 
-          <Todo
-            id={id}
-            setClearAll={(click) => (clearAll = click)}
-            setClearCompleted={(click) => (clearCompleted = click)}
-          ></Todo>
-        </CardContent>
-        <CardActions style={{ float: "right" }}>
-          <Button
-            size="small"
-            color="secondary"
-            variant="outlined"
-            onClick={() => clearCompleted()}
-          >
-            Clear Completed
-          </Button>
-          {/* <Button size="small" color="secondary" onClick={() => clearAll()}>
+        <Todo
+          id={id}
+          setClearAll={(click) => (clearAll = click)}
+          setClearCompleted={(click) => (clearCompleted = click)}
+        ></Todo>
+      </CardContent>
+      <CardActions style={{ float: "right" }}>
+        <Button
+          size="small"
+          color="secondary"
+          variant="outlined"
+          onClick={() => clearCompleted()}
+        >
+          Clear Completed
+        </Button>
+        {/* <Button size="small" color="secondary" onClick={() => clearAll()}>
           Clear All
         </Button> */}
-        </CardActions>
-      </Card>
-    </Zoom>
+      </CardActions>
+    </Card>
   );
 }

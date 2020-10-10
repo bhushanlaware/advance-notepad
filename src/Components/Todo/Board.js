@@ -1,7 +1,8 @@
-import { Box, Fab, Grid, Typography } from "@material-ui/core";
+import { Box, Container, Fab, Grid, Typography, Zoom } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
 import { Add } from "@material-ui/icons";
+import ConfirmationDialog from "../ConfirmationDialog";
 import TodoCard from "./TodoCard";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,6 +13,27 @@ const useStyle = makeStyles((theme) => ({
     bottom: "3%",
     color: "white",
   },
+  container: {
+    columnCount: 3,
+    [theme.breakpoints.down("sm")]: {
+      columnCount: 1,
+    },
+    [theme.breakpoints.up("md")]: {
+      columnCount: 2,
+    },
+    [theme.breakpoints.up("lg")]: {
+      columnCount: 3,
+    },
+    [theme.breakpoints.up("xl")]: {
+      columnCount: 4,
+    },
+  },
+  item: {
+    "-webkit-column-break-inside": "avoid",
+    "page-break-inside": "avoid",
+    " break-inside": "avoid",
+    paddingBottom: "15px",
+  },
 }));
 const getId = () => {
   return Date.now();
@@ -19,6 +41,7 @@ const getId = () => {
 const Board = () => {
   const classes = useStyle();
   const [cards, setCards] = useState([]);
+  const [deleteCard, setDeleteCard] = useState(false);
 
   useEffect(() => {
     let localCards = localStorage.getItem("cards");
@@ -40,13 +63,24 @@ const Board = () => {
     });
     setCards(newCards);
   };
-
+  const handleDelete = (id) => {
+    setDeleteCard(id);
+  };
   const handleRemoveCard = (id) => {
-    console.log(id);
     const newCards = cards.filter((x) => x.id !== id);
     setCards([...newCards]);
     localStorage.removeItem("current" + id);
     localStorage.removeItem("completed" + id);
+  };
+  const onDeleteConfirm = () => {
+    const newCards = cards.map((x) => {
+      if (x.id === deleteCard) {
+        x.delete = true;
+      }
+      return x;
+    });
+    setCards(newCards);
+    setDeleteCard(false);
   };
   const handleAddCard = () => {
     setCards([...cards, { id: getId(), title: "Todo" }]);
@@ -80,18 +114,27 @@ const Board = () => {
           </Typography>
         </Box>
       ) : (
-        <Grid container spacing={2}>
+        <div container className={classes.container}>
           {cards.map((x, i) => (
-            <Grid item xs={12} md={6} key={x.id} lg={4}>
-              <TodoCard
-                id={x.id}
-                removeCard={handleRemoveCard}
-                title={x.title}
-                setTitle={handleSetTitle}
-              />
-            </Grid>
+            <Zoom
+              in={!x.delete}
+              mountOnEnter
+              unmountOnExit
+              onExited={() => {
+                handleRemoveCard(x.id);
+              }}
+            >
+              <div item className={classes.item} key={x.id}>
+                <TodoCard
+                  id={x.id}
+                  removeCard={handleDelete}
+                  title={x.title}
+                  setTitle={handleSetTitle}
+                />
+              </div>
+            </Zoom>
           ))}
-        </Grid>
+        </div>
       )}
       {/* <IconButton
         aria-label="Add Todo"
@@ -106,6 +149,13 @@ const Board = () => {
       >
         <Add />
       </Fab>
+
+      <ConfirmationDialog
+        open={deleteCard}
+        setOpen={setDeleteCard}
+        confirm={onDeleteConfirm}
+        type="todo"
+      ></ConfirmationDialog>
     </>
   );
 };

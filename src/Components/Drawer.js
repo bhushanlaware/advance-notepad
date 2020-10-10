@@ -84,7 +84,7 @@ function ResponsiveDrawer(props) {
         <Box alignItems="center" display="flex" flexDirection="column" p={2}>
           <Avatar
             className={classes.avatar}
-            src={props.isDark ? "darklogo.svg" : "android-chrome-192x192.png"}
+            src={props.isDark ? "/darklogo.svg" : "/android-chrome-192x192.png"}
             to="/"
           />
           <Typography className={classes.name} color="textPrimary" variant="h6">
@@ -92,7 +92,9 @@ function ResponsiveDrawer(props) {
           </Typography>
         </Box>
         <Divider />
-        <TreeView {...props}></TreeView>
+        <Box style={{ overflow: "auto" }}>
+          <TreeView {...props}></TreeView>
+        </Box>
         <Box>
           <Divider />
           <List>

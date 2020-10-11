@@ -8,7 +8,6 @@ export default (state = initialState, action) => {
     case actionTypes.ADD_CARD:
       return [...state, []];
     case actionTypes.REMOVE_CARD:
-      debugger;
       newTodo = [...state];
       newTodo.splice(action.index, 1);
       return newTodo;

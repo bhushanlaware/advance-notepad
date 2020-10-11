@@ -33,12 +33,14 @@ export default function BookCard({
   const history = useHistory();
   const handleClick = () => {
     if (!isPage) {
-      if (isExpanded) {
-        collapse(id);
-      } else {
-        expand(id);
-      }
-      setIsExpanded(!isExpanded);
+      debugger;
+      // if (isExpanded) {
+      //   collapse(id);
+      // } else {
+      //   expand(id);
+      // }
+      // setIsExpanded(!isExpanded);
+      history.push(history.location.pathname + "/" + id);
     } else {
       history.push("/notes/" + id);
     }

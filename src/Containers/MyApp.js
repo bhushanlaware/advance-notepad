@@ -129,9 +129,16 @@ class MyApp extends Component {
               <Redirect exact from="/" to="/todo"></Redirect>
               <Route path="/todo" exact component={TodoPage}></Route>
               <Route
-                path="/notes"
-                exact
-                render={() => <Library notes={this.state.notes} />}
+                path="/notes/files/*"
+                render={(props) => (
+                  <Library {...props} notes={this.state.notes} />
+                )}
+              ></Route>
+              <Route
+                path="/notes/files"
+                render={(props) => (
+                  <Library {...props} notes={this.state.notes} />
+                )}
               ></Route>
               <Route
                 path="/notes/:id"
@@ -144,6 +151,7 @@ class MyApp extends Component {
                 )}
                 exact
               ></Route>
+              <Redirect from="/" to="/todo"></Redirect>
             </Switch>
           </Drawer>
         </Router>

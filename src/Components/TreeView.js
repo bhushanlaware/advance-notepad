@@ -256,7 +256,7 @@ StyledTreeItem.propTypes = {
 
 const useStyles = makeStyles({
   root: {
-    height: "69vh",
+    height: "70vh",
     flexGrow: 1,
     maxWidth: 400,
   },
@@ -361,7 +361,7 @@ export default React.memo((props) => {
           nodeId="Main"
           labelText="Notes"
           labelIcon={LibraryBooksIcon}
-          to="/notes"
+          to="/notes/files"
           color="#228be8"
           bgColor={
             theme.palette.type === "dark"

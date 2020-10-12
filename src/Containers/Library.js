@@ -5,7 +5,13 @@ import {
   ImportExport,
   Publish,
 } from "@material-ui/icons";
-import { Box, Container, Grid, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 
 import Book from "../Components/Book";
@@ -97,23 +103,32 @@ const Library = (props) => {
     <Container>
       <Box p={3}>
         <Breadcrumb {...props}></Breadcrumb>
-        <Box pt={3}>
-          <Grid container spacing={3}>
-            {showNotes.map((x) => (
-              <Book
-                title={x.title}
-                id={x.id}
-                isPage={x.childs === 0}
-                isHomePage={x.isHomepage}
-                renameMode={x.id === renameMode}
-                renamePage={props.onRename}
-                setRenameMode={setRenameMode}
-                deletePage={props.onDeletePage}
-                addPage={props.onAddPage}
-              />
-            ))}
-          </Grid>
-        </Box>{" "}
+        {notes.length === 0 ? (
+          <Box p={3} style={{ width: "100%", textAlign: "center" }}>
+            <Typography variant="h4">
+              No Notes created yet.<br></br> Please add Note by clicking the
+              below button.
+            </Typography>
+          </Box>
+        ) : (
+          <Box style={{ paddingTop: "20px" }}>
+            <Grid container spacing={3}>
+              {showNotes.map((x) => (
+                <Book
+                  title={x.title}
+                  id={x.id}
+                  isPage={x.childs === 0}
+                  isHomePage={x.isHomepage}
+                  renameMode={x.id === renameMode}
+                  renamePage={props.onRename}
+                  setRenameMode={setRenameMode}
+                  deletePage={props.onDeletePage}
+                  addPage={props.onAddPage}
+                />
+              ))}
+            </Grid>
+          </Box>
+        )}
         <SpeedDial
           ariaLabel="More"
           className={classes.speedDial}

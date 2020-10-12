@@ -91,19 +91,26 @@ function QuillEditor({ className, ...rest }) {
 QuillEditor.modules = {
   syntax: true,
   toolbar: [
-    [{ header: [1, 2, 3, 4, 5, 6, false] }, { font: [] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ color: [] }, { background: [] }],
     [
+      { header: [1, 2, 3, 4, 5, 6, false] },
+      { font: [] },
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      { color: [] },
+      { background: [] },
       { list: "ordered" },
       { list: "bullet" },
       { indent: "-1" },
       { indent: "+1" },
+      { align: [] },
+      "link",
+      "image",
+      "video",
+      "code-block",
+      "clean",
     ],
-    [{ align: [] }],
-    ["link", "image", "video"],
-    ["code-block"],
-    ["clean"],
     ["fullscreen"],
   ],
   clipboard: {
@@ -133,7 +140,7 @@ QuillEditor.formats = [
   "color",
   "code-block",
   "background",
-  "save",
+  "align",
 ];
 
 /*

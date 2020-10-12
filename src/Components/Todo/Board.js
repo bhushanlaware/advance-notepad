@@ -102,15 +102,8 @@ const Board = () => {
       {cards.length === 0 ? (
         <Box p={2} style={{ width: "100%", textAlign: "center" }}>
           <Typography variant="h4">
-            No Todo's
-            <span role="img" aria-label="todo">
-              📃
-            </span>
-            created yet.<br></br> Please add Todo card by clicking the button
-            below
-            <span role="img" aria-label="todo">
-              ⚡.
-            </span>{" "}
+            No Todo's created yet.<br></br> Please add Todo card by clicking the
+            below button.
           </Typography>
         </Box>
       ) : (

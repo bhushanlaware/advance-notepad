@@ -109,7 +109,6 @@ QuillEditor.modules = {
       "image",
       "video",
       "code-block",
-      "clean",
     ],
     ["fullscreen"],
   ],

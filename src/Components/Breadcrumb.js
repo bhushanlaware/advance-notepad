@@ -53,7 +53,7 @@ export default function IconBreadcrumbs(props) {
                 className={classes.link}
               >
                 <Book className={classes.icon} />
-                {x}
+                {props.notes.filter((y) => y.id === x)[0]?.title || x}
               </Link>
             );
           })
@@ -62,7 +62,7 @@ export default function IconBreadcrumbs(props) {
       {current !== "home" ? (
         <Typography color="primary" className={classes.link1}>
           <NoteOutlined className={classes.icon} />
-          {current}
+          {props.notes.filter((y) => y.id === current)[0]?.title || current}
         </Typography>
       ) : null}
     </Breadcrumbs>

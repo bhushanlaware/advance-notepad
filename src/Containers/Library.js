@@ -1,10 +1,12 @@
 import {
   Add as AddIcon,
   ArrowBackOutlined,
+  GetApp,
   ImportExport,
+  Publish,
 } from "@material-ui/icons";
 import { Box, Container, Grid, makeStyles } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Book from "../Components/Book";
 import Breadcrumb from "../Components/Breadcrumb";
@@ -28,11 +30,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const actions = [
-  { icon: <AddIcon />, name: "Add Note" },
-  { icon: <ImportExport />, name: "Export Notes" },
-  { icon: <ArrowBackOutlined />, name: "Import Notes" },
-  { icon: <ShareIcon />, name: "Share" },
-  { icon: <FavoriteIcon />, name: "Like" },
+  {
+    icon: <AddIcon />,
+    name: "Add Note",
+    onClick: (props, parentId, setRenameMode) => {
+      setRenameMode(props.onAddPage(parentId, "New Page"));
+    },
+  },
+  {
+    icon: <GetApp />,
+    name: "Export Notes",
+    onClick: (props) => {
+      props.export();
+    },
+  },
+  {
+    icon: <Publish />,
+    name: "Import Notes",
+    onClick: (props) => {
+      props.import();
+    },
+  },
+  // { icon: <ShareIcon />, name: "Share" },
+  // { icon: <FavoriteIcon />, name: "Like" },
 ];
 
 const Library = (props) => {
@@ -40,7 +60,7 @@ const Library = (props) => {
   const { notes } = props;
   const [showNotes, setShowNotes] = useState([]);
   const [open, setOpen] = React.useState(false);
-
+  const [renameMode, setRenameMode] = React.useState(false);
   const path = props.match.url;
   let location = path.split("files/")[1];
   if (location) location = location.split("/");
@@ -48,7 +68,7 @@ const Library = (props) => {
   if (current === "home") {
     current = "Main";
   }
-
+  let fileRef = useRef(null);
   const handleClose = () => {
     setOpen(false);
   };
@@ -57,46 +77,22 @@ const Library = (props) => {
     setOpen(true);
   };
   useEffect(() => {
-    const mainNotes = notes.filter((x) => x.parent === current);
+    let mainNotes = notes.filter((x) => x.parent === current);
+    if (current !== "Main") {
+      mainNotes = [
+        {
+          title: "Home Page",
+          childs: 0,
+          id: current,
+          isHomepage: true,
+          notes: notes.filter((x) => x.id === current)[0]?.notes || "",
+        },
+        ...mainNotes,
+      ];
+    }
     setShowNotes(mainNotes);
   }, [current, notes]);
-  const handleExpansion = (id) => {
-    const index = notes.findIndex((x) => x.id === id);
-    const newShowNotes = [
-      ...showNotes,
-      { ...notes[index], childs: 0, parent: id },
-      ...notes.filter((x) => x.parent === id),
-    ];
-    // const newShowNotes = [...notes];
-    // newShowNotes.splice(
-    //   index + 1,
-    //   0,
-    //   { ...notes[index], childs: 0, parent: id },
-    //   ...notes.filter((x) => x.parent === id)
-    // );
-    setShowNotes(newShowNotes);
-  };
 
-  const handleCollapse = (id) => {
-    const allChilds = getAllChilds(id, showNotes); //[...showNotes.filter((x) => x.parent !== id)];
-    const newShowNotes = showNotes.filter(
-      (x) =>
-        allChilds.filter((y) => y.id === x.id).length === 0 && x.parent !== id
-    );
-
-    setShowNotes(newShowNotes);
-  };
-  const getAllChilds = (id, list) => {
-    let currentChilds = list.filter(
-      (x) => x.parent === id && x.parent !== x.id
-    );
-    if (currentChilds.length === 0) return [];
-    currentChilds.forEach((x) => {
-      let childsChilds = getAllChilds(x.id, list);
-      currentChilds = [...currentChilds, ...childsChilds];
-    });
-    return currentChilds;
-  };
   return (
     <Container>
       <Box p={3}>
@@ -104,15 +100,17 @@ const Library = (props) => {
         <Box pt={3}>
           <Grid container spacing={3}>
             {showNotes.map((x) => (
-              <Grid item xs={6} md={2} lg={2} xl={1}>
-                <Book
-                  title={x.title}
-                  expand={handleExpansion}
-                  collapse={handleCollapse}
-                  id={x.id}
-                  isPage={x.childs === 0}
-                />
-              </Grid>
+              <Book
+                title={x.title}
+                id={x.id}
+                isPage={x.childs === 0}
+                isHomePage={x.isHomepage}
+                renameMode={x.id === renameMode}
+                renamePage={props.onRename}
+                setRenameMode={setRenameMode}
+                deletePage={props.onDeletePage}
+                addPage={props.onAddPage}
+              />
             ))}
           </Grid>
         </Box>{" "}
@@ -131,7 +129,9 @@ const Library = (props) => {
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}
-              onClick={handleClose}
+              onClick={() =>
+                action.onClick(props, current, setRenameMode, fileRef)
+              }
             />
           ))}
         </SpeedDial>

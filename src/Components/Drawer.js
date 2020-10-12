@@ -1,4 +1,4 @@
-import { Avatar, Box } from "@material-ui/core";
+import { Avatar, Box, Menu, MenuItem } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import AppBar from "@material-ui/core/AppBar";
@@ -67,6 +67,57 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
   },
 }));
+const MoreMenu = ({
+  anchorEl,
+  setAnchorEl,
+  addPage,
+  setNoteId,
+  deletePage,
+  renamePage,
+}) => {
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setNoteId("Main");
+  };
+  return (
+    <Menu
+      id="simple-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+    >
+      <MenuItem
+        onClick={(e) => {
+          addPage(e);
+          handleClose();
+        }}
+      >
+        Add
+      </MenuItem>
+      <MenuItem
+        onClick={(e) => {
+          renamePage(e);
+          handleClose();
+        }}
+      >
+        Rename
+      </MenuItem>
+      <MenuItem
+        onClick={(e) => {
+          deletePage(e);
+          handleClose();
+        }}
+      >
+        Delete
+      </MenuItem>
+    </Menu>
+  );
+};
 
 function ResponsiveDrawer(props) {
   const { window } = props;
@@ -95,17 +146,17 @@ function ResponsiveDrawer(props) {
         <Box style={{ overflow: "auto" }}>
           <TreeView {...props}></TreeView>
         </Box>
-        <Box>
-          <Divider />
-          <List>
-            <ListItem button key={"setting"} onClick={props.changeTheme}>
-              <ListItemIcon>
-                <DarkMode />
-              </ListItemIcon>
-              <ListItemText primary={"Change Theme"} />
-            </ListItem>
-          </List>
-        </Box>
+      </Box>{" "}
+      <Box style={{ position: "absolute", bottom: 0, width: "100%" }}>
+        <Divider />
+        <List>
+          <ListItem button key={"setting"} onClick={props.changeTheme}>
+            <ListItemIcon>
+              <DarkMode />
+            </ListItemIcon>
+            <ListItemText primary={"Change Theme"} />
+          </ListItem>
+        </List>
       </Box>
     </div>
   );

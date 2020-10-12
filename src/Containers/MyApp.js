@@ -8,6 +8,7 @@ import {
 
 import Board from "../Components/Todo/Board";
 import { Box } from "@material-ui/core";
+import ConfirmationDialog from "../Components/ConfirmationDialog";
 import Drawer from "../Components/Drawer";
 import Editor from "./Editor";
 import Library from "./Library";
@@ -36,15 +37,43 @@ const TodoPage = () => {
 class MyApp extends Component {
   state = { notes: [], fileLocation: "", openNote: null };
 
-  componentWillMount = () => {
-    const fileLocation = localStorage.getItem("fileLocation") || "";
-    console.log("mounter");
-
-    this.setState({ fileLocation });
-    if (fileLocation === "") {
-      const book = new Book("Main", "My Book");
-      this.setState({ notes: [book], openNote: book });
+  exportNotes = () => {
+    const content = JSON.stringify(this.state.notes);
+    var blob = new Blob([content], {
+      type: "application/json",
+    });
+    saveAs(blob, "notes.json");
+  };
+  importNotes = () => {
+    this.fileRef.click();
+  };
+  handleUpload = (e) => {
+    // debugger;
+    // console.log(e.target.value);
+    this.fileReader = new FileReader();
+    this.fileReader.onloadend = this.handleFileRead;
+    this.fileReader.readAsText(e.target.files[0]);
+  };
+  handleFileRead = (e) => {
+    const content = this.fileReader.result;
+    debugger;
+    try {
+      const uploadedNotes = JSON.parse(content);
+      if (uploadedNotes && uploadedNotes.length > 0) {
+        uploadedNotes.forEach((x) => {
+          if (x.title && x.notes && x.id) {
+            //will continue upload
+          } else {
+            throw new Error();
+          }
+        });
+        this.setState({ notes: uploadedNotes });
+        localStorage.setItem("notes", JSON.stringify(uploadedNotes));
+      } else throw new Error();
+    } catch {
+      console.log("Not valid import file");
     }
+    // … do something with the 'content' …
   };
   handleKeyPress = (e) => {
     //!Ctrl +S
@@ -70,8 +99,12 @@ class MyApp extends Component {
   };
   componentDidMount = () => {
     document.addEventListener("keydown", this.handleKeyPress);
-    const localNotes = localStorage.getItem("notes") || "[]";
-    this.setState({ notes: JSON.parse(localNotes) });
+    try {
+      const localNotes = localStorage.getItem("notes") || "[]";
+      this.setState({ notes: JSON.parse(localNotes) });
+    } catch {
+      localStorage.removeItem("notes");
+    }
   };
   componentWillUnmount = () => {
     document.removeEventListener("keydown", this.handleKeyPress);
@@ -117,6 +150,13 @@ class MyApp extends Component {
   render() {
     return (
       <>
+        <input
+          type="file"
+          ref={(i) => (this.fileRef = i)}
+          onChange={this.handleUpload}
+          style={{ display: "none" }}
+          accept=".json"
+        ></input>
         <Router history={browserHistory}>
           <Drawer
             {...this.props}
@@ -131,13 +171,29 @@ class MyApp extends Component {
               <Route
                 path="/notes/files/*"
                 render={(props) => (
-                  <Library {...props} notes={this.state.notes} />
+                  <Library
+                    {...props}
+                    notes={this.state.notes}
+                    onRename={this.handleRename}
+                    onAddPage={this.handleAddPage}
+                    onDeletePage={this.handleDeletePage}
+                    export={this.exportNotes}
+                    import={this.importNotes}
+                  />
                 )}
               ></Route>
               <Route
                 path="/notes/files"
                 render={(props) => (
-                  <Library {...props} notes={this.state.notes} />
+                  <Library
+                    {...props}
+                    notes={this.state.notes}
+                    onRename={this.handleRename}
+                    onAddPage={this.handleAddPage}
+                    onDeletePage={this.handleDeletePage}
+                    export={this.exportNotes}
+                    import={this.importNotes}
+                  />
                 )}
               ></Route>
               <Route

@@ -41,6 +41,76 @@
     -->
     <title>Advance Notepad</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <style>
+      .MuiTreeItem-root.Mui-selected
+        > .MuiTreeItem-content
+        .MuiTreeItem-label:hover,
+      .MuiTreeItem-root.Mui-selected:focus
+        > .MuiTreeItem-content
+        .MuiTreeItem-label {
+        background-color: transparent !important;
+      }
+      .ql-toolbar.ql-snow {
+        top: 0%;
+        position: fixed;
+        height: 5%;
+        width: calc(100% - 240px);
+      }
+      .ql-container.ql-snow {
+        height: 95%;
+        position: fixed;
+        top: 5%;
+        width: calc(100% - 240px);
+      }
+      .ql-editor {
+        height: 100%;
+        overflow-y: auto;
+      }
+      @media screen and (max-width: 900px) {
+        .ql-toolbar.ql-snow {
+          top: 0%;
+          position: fixed;
+          height: 10%;
+          width: calc(100% - 240px);
+        }
+        .ql-container.ql-snow {
+          height: 90%;
+          position: fixed;
+          top: 10%;
+          width: calc(100% - 240px);
+        }
+        .ql-editor {
+          height: 100%;
+          overflow-y: auto;
+        }
+      }
+      @media screen and (max-width: 600px) {
+        .ql-toolbar.ql-snow {
+          height: 10%;
+          position: fixed;
+          top: 90%;
+          width: 100%;
+        }
+        .ql-container.ql-snow {
+          height: 80%;
+          width: 100%;
+          position: fixed;
+        }
+      @media screen and (max-width: 350px) {
+        .ql-toolbar.ql-snow {
+          height: 15%;
+          position: fixed;
+          top: 85%;
+          width: 100%;
+        }
+        .ql-container.ql-snow {
+          height: 75%;
+          width: 100%;
+          position: fixed;
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

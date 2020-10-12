@@ -110,7 +110,6 @@ QuillEditor.modules = {
       "video",
       "code-block",
     ],
-    ["fullscreen"],
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:

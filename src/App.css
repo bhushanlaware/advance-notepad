@@ -2,3 +2,10 @@
 .MuiTreeItem-root.Mui-selected:focus > .MuiTreeItem-content .MuiTreeItem-label {
   background-color: transparent !important;
 }
+.ql-container.ql-snow {
+  height: auto;
+}
+.ql-editor {
+  height: 93vh;
+  overflow-y: auto;
+}

@@ -83,6 +83,7 @@ const Library = (props) => {
     setOpen(true);
   };
   useEffect(() => {
+    debugger;
     let mainNotes = notes.filter((x) => x.parent === current);
     if (current !== "Main") {
       mainNotes = [

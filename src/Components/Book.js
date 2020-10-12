@@ -187,7 +187,7 @@ export default function BookCard({
               {!renameMode ? (
                 <CardContent style={{ textAlign: "center", padding: "10px" }}>
                   <Typography gutterBottom variant="body1" component="h2">
-                    {isHomePage ? "Home Page" : title}
+                    {isHomePage ? "Home Page" : titlep}
                   </Typography>
                 </CardContent>
               ) : null}
@@ -203,7 +203,7 @@ export default function BookCard({
                   <TextField
                     id="standard-basic"
                     fullWidth
-                    defaultValue={title}
+                    defaultValue={titlep}
                     onChange={(e) => {
                       e.stopPropagation();
                       setTitle(e.target.value);

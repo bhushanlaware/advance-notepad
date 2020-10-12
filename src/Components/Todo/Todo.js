@@ -34,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "line-through",
     color: "grey",
   },
-  listItem: {},
+  listItem: {
+    paddingLeft: 0,
+  },
 }));
 
 export default React.memo((props) => {
@@ -133,7 +135,7 @@ export default React.memo((props) => {
               {current.map((x, i) => (
                 <Slide direction="right" in={true}>
                   <ListItem key={i} className={classes.listItem}>
-                    <ListItemIcon>
+                    <ListItemIcon style={{ paddingLeft: 0 }}>
                       <IconButton
                         edge="end"
                         aria-label="Completed"

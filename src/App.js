@@ -2,19 +2,15 @@ import "./App.css";
 
 import * as serviceWorker from "./serviceWorker";
 
-import { Button, CssBaseline } from "@material-ui/core";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import BluePink from "./Themes/BluePink";
+import { CssBaseline } from "@material-ui/core";
 import MyApp from "./Containers/MyApp";
-import { useSnackbar } from "notistack";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
-  const [newVersionAvailable, setNewVersionAvailable] = useState(false);
-  const [waitingWorker, setWaitingWorker] = useState({});
-  const { enqueueSnackbar } = useSnackbar();
 
   const theme = React.useMemo(
     () =>
@@ -27,70 +23,22 @@ function App() {
     [darkMode]
   );
   useEffect(() => {
-    serviceWorker.register({ onUpdate: onServiceWorkerUpdate });
+    serviceWorker.register({
+      onUpdate: (registration) => {
+        registration.unregister().then(() => {
+          window.location.reload();
+        });
+      },
+    });
   }, []);
-
-  useEffect(() => {
-    if (newVersionAvailable) {
-      enqueueSnackbar("A new version is available.", {
-        persist: true,
-        variant: "success",
-        action: refreshAction(),
-      });
-    }
-  }, [newVersionAvailable]);
-
-  const onServiceWorkerUpdate = (registration) => {
-    console.log("onServiceWorkerUpdate", registration);
-    setNewVersionAvailable(true);
-    setWaitingWorker(registration.waiting);
-  };
-
-  const updateServiceWorker = () => {
-    console.log("Update service worker..", waitingWorker);
-    waitingWorker && waitingWorker.postMessage({ type: "SKIP_WAITING" });
-    setNewVersionAvailable(false);
-    window.location.reload();
-  };
-
-  const refreshAction = (key) => {
-    //render the snackbar button
-    return (
-      <Fragment>
-        <Button
-          className="snackbar-button"
-          size="small"
-          onClick={updateServiceWorker}
-          variant="contained"
-        >
-          {"refresh"}
-        </Button>
-      </Fragment>
-    );
-  };
-  // useEffect(() => {
-  //   console.log("Regstering..");
-  //   serviceWorker.register({ onUpdate: onServiceWorkerUpdate });
-  // }, []);
 
   useEffect(() => {
     let dmode = localStorage.getItem("darkMode");
-
-    // if (dmode == undefined) {
-    //   dmode = false;
-    //   localStorage.setItem("darkMode", dmode);
-    // }
     dmode === "false" ? setDarkMode(false) : setDarkMode(true);
   }, []);
 
-  // useEffect(() => {
-  //   window["isUpdateAvailable"].then((isAvailable) => {
-  //     if (isAvailable) {
-  //       window.location.href = "/";
-  //     }
-  //   });
-  // }, []);
   const changeTheme = () => {
+    console.log("Changing theme");
     localStorage.setItem("darkMode", !darkMode);
     setDarkMode(!darkMode);
   };

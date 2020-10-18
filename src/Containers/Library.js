@@ -1,10 +1,4 @@
-import {
-  Add as AddIcon,
-  ArrowBackOutlined,
-  GetApp,
-  ImportExport,
-  Publish,
-} from "@material-ui/icons";
+import { Add as AddIcon, GetApp, Publish } from "@material-ui/icons";
 import {
   Box,
   Container,
@@ -16,8 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Book from "../Components/Book";
 import Breadcrumb from "../Components/Breadcrumb";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
+import Draggable from "react-draggable"; // The default
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
@@ -115,17 +108,19 @@ const Library = (props) => {
           <Box style={{ paddingTop: "20px" }}>
             <Grid container spacing={3}>
               {showNotes.map((x) => (
-                <Book
-                  title={x.title}
-                  id={x.id}
-                  isPage={x.childs === 0}
-                  isHomePage={x.isHomepage}
-                  renameMode={x.id === renameMode}
-                  renamePage={props.onRename}
-                  setRenameMode={setRenameMode}
-                  deletePage={props.onDeletePage}
-                  addPage={props.onAddPage}
-                />
+                <Draggable>
+                  <Book
+                    title={x.title}
+                    id={x.id}
+                    isPage={x.childs === 0}
+                    isHomePage={x.isHomepage}
+                    renameMode={x.id === renameMode}
+                    renamePage={props.onRename}
+                    setRenameMode={setRenameMode}
+                    deletePage={props.onDeletePage}
+                    addPage={props.onAddPage}
+                  />
+                </Draggable>
               ))}
             </Grid>
           </Box>

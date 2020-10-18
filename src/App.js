@@ -26,22 +26,28 @@ function App() {
       }),
     [darkMode]
   );
+  useEffect(() => {
+    serviceWorker.register({ onUpdate: onServiceWorkerUpdate });
+  }, []);
 
-  const onServiceWorkerUpdate = (registration) => {
-    console.log("onServiceWorkerUpdate");
-    setNewVersionAvailable(true);
-    setWaitingWorker(registration && registration.waiting);
-    if (newVersionAvailable)
-      //show snackbar with refresh button
-      enqueueSnackbar("A new version is avaible", {
+  useEffect(() => {
+    if (newVersionAvailable) {
+      enqueueSnackbar("A new version is available.", {
         persist: true,
         variant: "success",
         action: refreshAction(),
       });
+    }
+  }, [newVersionAvailable]);
+
+  const onServiceWorkerUpdate = (registration) => {
+    console.log("onServiceWorkerUpdate", registration);
+    setNewVersionAvailable(true);
+    setWaitingWorker(registration.waiting);
   };
 
   const updateServiceWorker = () => {
-    console.log("updateServiceWorker");
+    console.log("Update service worker..", waitingWorker);
     waitingWorker && waitingWorker.postMessage({ type: "SKIP_WAITING" });
     setNewVersionAvailable(false);
     window.location.reload();
@@ -55,16 +61,17 @@ function App() {
           className="snackbar-button"
           size="small"
           onClick={updateServiceWorker}
+          variant="contained"
         >
           {"refresh"}
         </Button>
       </Fragment>
     );
   };
-  useEffect(() => {
-    console.log("Regstering..");
-    serviceWorker.register({ onUpdate: onServiceWorkerUpdate });
-  }, []);
+  // useEffect(() => {
+  //   console.log("Regstering..");
+  //   serviceWorker.register({ onUpdate: onServiceWorkerUpdate });
+  // }, []);
 
   useEffect(() => {
     let dmode = localStorage.getItem("darkMode");

@@ -175,7 +175,7 @@ export default React.memo((props) => {
             <List>
               {completed.map((x, i) => (
                 <Slide direction="up" in={true}>
-                  <ListItem key={i}>
+                  <ListItem key={i} style={{ paddingLeft: 0 }}>
                     <ListItemIcon>
                       <IconButton
                         edge="end"
@@ -190,7 +190,7 @@ export default React.memo((props) => {
                       className={classes.completedList}
                       primary={x}
                     />
-                    <ListItemSecondaryAction>
+                    <ListItemSecondaryAction style={{ paddingLeft: 0 }}>
                       <IconButton
                         edge="end"
                         aria-label="Delete"

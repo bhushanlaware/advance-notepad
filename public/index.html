@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Create notes & todos and save them offline. "
+      content="Advance Notepad, It is a rich-text note-taking progressive web app.  It is useful to organize notes in books and pages manner. It is offline and can export and import notes.  It is using local storage for storing notes so notes will be there even if you close the browser.  It also includes the TODO app to list down the tasks. "
     />
     <link rel="stylesheet" href="//cdn.quilljs.com/1.2.6/quill.snow.css" />
 
@@ -41,7 +41,20 @@
     -->
     <title>Advance Notepad</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-23B4WP0W1Z"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
+      gtag("config", "G-23B4WP0W1Z");
+    </script>
     <style>
       .MuiTreeItem-root.Mui-selected
         > .MuiTreeItem-content
@@ -58,6 +71,7 @@
         width: calc(100% - 240px);
         z-index: 10;
       }
+
       .ql-container.ql-snow {
         height: 95%;
         position: fixed;
@@ -68,6 +82,7 @@
         height: 100%;
         overflow-y: auto;
       }
+
       @media screen and (max-width: 900px) {
         .ql-toolbar.ql-snow {
           top: 0%;
@@ -86,6 +101,7 @@
           overflow-y: auto;
         }
       }
+
       @media screen and (max-width: 600px) {
         .ql-toolbar.ql-snow {
           height: 10%;
@@ -93,6 +109,7 @@
           top: 90%;
           width: 100%;
         }
+
         .ql-container.ql-snow {
           height: 80%;
           width: 100%;

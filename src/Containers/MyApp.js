@@ -12,6 +12,7 @@ import ConfirmationDialog from "../Components/ConfirmationDialog";
 import Drawer from "../Components/Drawer";
 import Editor from "./Editor";
 import FileComparer from "./FileComparer";
+import JsonViewer from "./JsonViewer";
 import Library from "./Library";
 import { createBrowserHistory } from "history";
 import { saveAs } from "file-saver";
@@ -183,6 +184,11 @@ class MyApp extends Component {
                 path="/filecompare"
                 exact
                 render={() => <FileComparer isDark={this.props.isDark} />}
+              ></Route>
+              <Route
+                path="/jsonviewer"
+                exact
+                render={() => <JsonViewer isDark={this.props.isDark} />}
               ></Route>
               <Route
                 path="/notes/files/*"

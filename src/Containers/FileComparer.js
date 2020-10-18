@@ -70,7 +70,6 @@ const FileComparer = (props) => {
               multiline
               rows={8}
               disabled={checkDiff}
-              placeholder="Original text"
               value={firstFile}
               onChange={(v) => {
                 setFirstFile(v.target.value);
@@ -86,7 +85,6 @@ const FileComparer = (props) => {
               style={{ borderRadius: 0 }}
               multiline
               rows={8}
-              placeholder="Changed text"
               value={secondFile}
               onChange={(v) => {
                 setSecondFile(v.target.value);

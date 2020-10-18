@@ -5,6 +5,7 @@ import {
   CompareArrowsOutlined,
   Delete,
   MoreVert,
+  Visibility,
 } from "@material-ui/icons";
 import {
   IconButton,
@@ -365,7 +366,7 @@ export default React.memo((props) => {
           }
         />
         <StyledTreeItem
-          selected={location.pathname.includes("todo")}
+          selected={location.pathname.includes("filecompare")}
           to="/filecompare"
           nodeId="121"
           labelText="File Comparer"
@@ -375,6 +376,19 @@ export default React.memo((props) => {
             theme.palette.type === "dark"
               ? theme.palette.background.default
               : "#ecfff9"
+          }
+        />
+        <StyledTreeItem
+          selected={location.pathname.includes("jsonviewer")}
+          to="/jsonviewer"
+          nodeId="122"
+          labelText="Json Viewer"
+          labelIcon={Visibility}
+          color="#00c332"
+          bgColor={
+            theme.palette.type === "dark"
+              ? theme.palette.background.default
+              : "#ecffee"
           }
         />
         <StyledTreeItem

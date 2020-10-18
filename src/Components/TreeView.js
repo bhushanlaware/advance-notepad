@@ -1,4 +1,11 @@
-import { Add, Book, CheckCircle, Delete, MoreVert } from "@material-ui/icons";
+import {
+  Add,
+  Book,
+  CheckCircle,
+  CompareArrowsOutlined,
+  Delete,
+  MoreVert,
+} from "@material-ui/icons";
 import {
   IconButton,
   Menu,
@@ -355,6 +362,19 @@ export default React.memo((props) => {
             theme.palette.type === "dark"
               ? theme.palette.background.default
               : "#fcefe3"
+          }
+        />
+        <StyledTreeItem
+          selected={location.pathname.includes("todo")}
+          to="/filecompare"
+          nodeId="121"
+          labelText="File Comparer"
+          labelIcon={CompareArrowsOutlined}
+          color="#00c3a8"
+          bgColor={
+            theme.palette.type === "dark"
+              ? theme.palette.background.default
+              : "#ecfff9"
           }
         />
         <StyledTreeItem

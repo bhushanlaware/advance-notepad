@@ -1,6 +1,7 @@
 import "./index.css";
 
 import App from "./App";
+import FileComparer from "./Containers/FileComparer";
 import React from "react";
 import ReactDOM from "react-dom";
 import { SnackbarProvider } from "notistack";

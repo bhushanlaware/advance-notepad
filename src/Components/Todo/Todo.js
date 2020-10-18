@@ -84,6 +84,7 @@ export default React.memo((props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    clickAudio.play();
     setCurrent([...current, task]);
     setTask("");
   };
@@ -144,7 +145,7 @@ export default React.memo((props) => {
                   ></TextField>
                   <Button
                     startIcon={<AddCircleOutline></AddCircleOutline>}
-                    style={{ width: "unset" }}
+                    style={{ width: "unset", marginLeft: "-3px" }}
                     type="submit"
                   >
                     Add

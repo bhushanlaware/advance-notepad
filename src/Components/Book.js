@@ -129,6 +129,7 @@ export default function BookCard({
     setDeleteNote(true);
   };
   const deleteConfirm = () => {
+    setDeleteNote(null);
     setMount(false);
   };
   return (

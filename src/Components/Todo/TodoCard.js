@@ -92,11 +92,20 @@ export default function TodoCard(props) {
         ></Todo>
       </CardContent>
       <CardActions style={{ float: "right" }}>
+        {/* <Button
+          size="small"
+          color="primary"
+          variant="outlined"
+          onClick={() => clearCompleted()}
+        >
+          Add
+        </Button> */}
         <Button
           size="small"
           color="secondary"
           variant="outlined"
           onClick={() => clearCompleted()}
+          style={{ float: "right" }}
         >
           Clear Completed
         </Button>

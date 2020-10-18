@@ -76,7 +76,6 @@ const Library = (props) => {
     setOpen(true);
   };
   useEffect(() => {
-    debugger;
     let mainNotes = notes.filter((x) => x.parent === current);
     if (current !== "Main") {
       mainNotes = [
@@ -108,19 +107,17 @@ const Library = (props) => {
           <Box style={{ paddingTop: "20px" }}>
             <Grid container spacing={3}>
               {showNotes.map((x) => (
-                <Draggable>
-                  <Book
-                    title={x.title}
-                    id={x.id}
-                    isPage={x.childs === 0}
-                    isHomePage={x.isHomepage}
-                    renameMode={x.id === renameMode}
-                    renamePage={props.onRename}
-                    setRenameMode={setRenameMode}
-                    deletePage={props.onDeletePage}
-                    addPage={props.onAddPage}
-                  />
-                </Draggable>
+                <Book
+                  title={x.title}
+                  id={x.id}
+                  isPage={x.childs === 0}
+                  isHomePage={x.isHomepage}
+                  renameMode={x.id === renameMode}
+                  renamePage={props.onRename}
+                  setRenameMode={setRenameMode}
+                  deletePage={props.onDeletePage}
+                  addPage={props.onAddPage}
+                />
               ))}
             </Grid>
           </Box>
@@ -134,6 +131,7 @@ const Library = (props) => {
           open={open}
           direction="up"
           color="secondary"
+          style={{ position: "fixed" }}
         >
           {actions.map((action) => (
             <SpeedDialAction

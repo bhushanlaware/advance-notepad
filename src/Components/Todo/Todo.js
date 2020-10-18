@@ -1,11 +1,18 @@
 import {
+  AddCircleOutline,
+  Edit,
+  EditOutlined,
+  RefreshOutlined,
+} from "@material-ui/icons";
+import {
   Box,
+  Button,
+  ButtonGroup,
   Divider,
   ListItemIcon,
   Slide,
   TextField,
 } from "@material-ui/core";
-import { Edit, EditOutlined, RefreshOutlined } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 
 import DeleteIcon from "@material-ui/icons/HighlightOffOutlined";
@@ -118,17 +125,31 @@ export default React.memo((props) => {
           <div className={classes.demo}>
             <Box mt={1}>
               <form onSubmit={handleSubmit}>
-                <TextField
-                  label="Type task and press enter"
-                  variant="outlined"
-                  required
+                <ButtonGroup
+                  variant="contained"
+                  color="primary"
                   fullWidth
-                  value={task}
-                  size="small"
-                  onChange={(e) => {
-                    setTask(e.target.value);
-                  }}
-                ></TextField>
+                  disableElevation
+                >
+                  <TextField
+                    label="Type task and press enter"
+                    variant="outlined"
+                    required
+                    fullWidth
+                    value={task}
+                    size="small"
+                    onChange={(e) => {
+                      setTask(e.target.value);
+                    }}
+                  ></TextField>
+                  <Button
+                    startIcon={<AddCircleOutline></AddCircleOutline>}
+                    style={{ width: "unset" }}
+                    type="submit"
+                  >
+                    Add
+                  </Button>
+                </ButtonGroup>
               </form>
             </Box>
             <List>

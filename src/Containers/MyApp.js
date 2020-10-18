@@ -14,6 +14,7 @@ import Editor from "./Editor";
 import Library from "./Library";
 import { createBrowserHistory } from "history";
 import { saveAs } from "file-saver";
+import { withSnackbar } from "notistack";
 
 const browserHistory = createBrowserHistory();
 
@@ -43,6 +44,9 @@ class MyApp extends Component {
       type: "application/json",
     });
     saveAs(blob, "notes.json");
+    this.props.enqueueSnackbar("Notes exported successfully", {
+      variant: "success",
+    });
   };
   importNotes = () => {
     this.fileRef.click();
@@ -56,7 +60,6 @@ class MyApp extends Component {
   };
   handleFileRead = (e) => {
     const content = this.fileReader.result;
-    debugger;
     try {
       const uploadedNotes = JSON.parse(content);
       if (uploadedNotes && uploadedNotes.length > 0) {
@@ -69,9 +72,16 @@ class MyApp extends Component {
         });
         this.setState({ notes: uploadedNotes });
         localStorage.setItem("notes", JSON.stringify(uploadedNotes));
+        this.props.enqueueSnackbar("Notes imported successfully.", {
+          variant: "success",
+        });
       } else throw new Error();
     } catch {
       console.log("Not valid import file");
+
+      this.props.enqueueSnackbar("Not valid import file.", {
+        variant: "error",
+      });
     }
     // … do something with the 'content' …
   };
@@ -216,4 +226,4 @@ class MyApp extends Component {
   }
 }
 
-export default MyApp;
+export default withSnackbar(MyApp);

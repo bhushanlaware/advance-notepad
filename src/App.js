@@ -8,10 +8,11 @@ import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import BluePink from "./Themes/BluePink";
 import { CssBaseline } from "@material-ui/core";
 import MyApp from "./Containers/MyApp";
+import { useSnackbar } from "notistack";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
-
+  const { enqueueSnackbar } = useSnackbar();
   const theme = React.useMemo(
     () =>
       createMuiTheme({
@@ -25,6 +26,9 @@ function App() {
   useEffect(() => {
     serviceWorker.register({
       onUpdate: (registration) => {
+        enqueueSnackbar("Newer version detected. Updating to new version. 🚀", {
+          variant: "success",
+        });
         registration.unregister().then(() => {
           window.location.reload();
         });

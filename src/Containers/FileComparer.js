@@ -3,12 +3,22 @@ import {
   Button,
   ButtonGroup,
   Container,
+  Divider,
   Grid,
   TextField,
   Typography,
 } from "@material-ui/core";
-import { Edit, Restore, SwapHoriz } from "@material-ui/icons";
+import {
+  CallSplit,
+  Edit,
+  HorizontalSplit,
+  Restore,
+  SwapHoriz,
+  UnfoldLess,
+  VerticalSplit,
+} from "@material-ui/icons";
 import React, { PureComponent, useState } from "react";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
 import ReactDiffViewer from "react-diff-viewer";
 import { makeStyles } from "@material-ui/core";
@@ -42,6 +52,7 @@ const FileComparer = (props) => {
   const [firstFile, setFirstFile] = useState("");
   const [secondFile, setSecondFile] = useState("");
   const [checkDiff, setCheckDiff] = useState(false);
+  const [viewType, setViewType] = useState("split");
   const handleCheckDiff = () => {
     if (firstFile && secondFile) setCheckDiff(true);
   };
@@ -60,6 +71,12 @@ const FileComparer = (props) => {
   return (
     <Container fluid>
       <Box pt={2}>
+        <Box pb={2}>
+          <Typography variant="subtitle1" color="textSecondary">
+            This app to not upload your data or store it anywhere. So feel free
+            to paste senstive data.
+          </Typography>
+        </Box>
         <Grid container>
           <Grid xs={6}>
             <TextField
@@ -93,41 +110,63 @@ const FileComparer = (props) => {
           </Grid>
         </Grid>
       </Box>
-      <Box p={3} style={{ textAlign: "center" }}>
-        {checkDiff ? (
-          <ButtonGroup variant="contained" color="primary">
-            <Button onClick={handleEdit} startIcon={<Edit></Edit>}>
-              Edit
+      <Box pt={3} pb={3}>
+        <Box style={{ float: "left" }}>
+          {checkDiff ? (
+            <ButtonGroup variant="contained" color="primary">
+              <Button onClick={handleEdit} startIcon={<Edit></Edit>}>
+                Edit
+              </Button>
+              <Button onClick={handleSwap} startIcon={<SwapHoriz></SwapHoriz>}>
+                Swap
+              </Button>
+              <Button onClick={handleReset} startIcon={<Restore></Restore>}>
+                Reset
+              </Button>
+            </ButtonGroup>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCheckDiff}
+              disabled={!firstFile && !secondFile}
+            >
+              Check Difference
             </Button>
-            <Button onClick={handleSwap} startIcon={<SwapHoriz></SwapHoriz>}>
-              Swap
-            </Button>
-            <Button onClick={handleReset} startIcon={<Restore></Restore>}>
-              Reset
-            </Button>
-          </ButtonGroup>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCheckDiff}
-            disabled={!firstFile && !secondFile}
+          )}
+        </Box>
+        <Box style={{ float: "right" }}>
+          <ToggleButtonGroup
+            value={viewType}
+            size="small"
+            onChange={(e, v) => {
+              if (v !== null) setViewType(v);
+            }}
+            exclusive
           >
-            Check Difference
-          </Button>
-        )}
+            <ToggleButton value="split">
+              <VerticalSplit fontSize="small"></VerticalSplit> Split
+            </ToggleButton>
+            <ToggleButton value="unified">
+              <HorizontalSplit fontSize="small"></HorizontalSplit>Unified
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
       </Box>
-      <Box style={{ textAlign: "center" }}>
+
+      <Box pt={5} pb={2}>
         {checkDiff ? (
           firstFile === secondFile ? (
-            <Typography variant="h5" color="secondary">
-              Both files are identical 🏆.
-            </Typography>
+            <Box style={{ textAlign: "center" }}>
+              <Typography variant="h5" color="secondary">
+                Both files are identical 🏆.
+              </Typography>
+            </Box>
           ) : (
             <ReactDiffViewer
               oldValue={firstFile}
               newValue={secondFile}
-              splitView={true}
+              splitView={viewType === "split"}
               useDarkTheme={props.isDark}
             />
           )

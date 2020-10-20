@@ -54,7 +54,6 @@ const JsonViewer = (props) => {
   };
   return (
     <Box p={3}>
-    
       <Grid container>
         <Box pb={2}>
           <Typography variant="subtitle1" color="textSecondary">
@@ -77,47 +76,56 @@ const JsonViewer = (props) => {
           ></TextField>
         </Grid>
       </Grid>
-      <Box pt={2} pb={2} style={{ float: "left" }}>
-        {view ? (
-          <ButtonGroup variant="contained" color="primary">
-            <Button startIcon={<Edit />} onClick={handleEdit}>
-              Edit
-            </Button>
-            <Button startIcon={<Restore />} onClick={handleReset}>
-              Reset
-            </Button>
-          </ButtonGroup>
-        ) : (
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<Visibility />}
-            onClick={handleView}
-            disabled={json === ""}
-          >
-            View JSON
-          </Button>
-        )}
-      </Box>
-      <Box pt={2} pb={2} style={{ float: "right" }}>
-        <ToggleButtonGroup
-          value={options.collapsed}
-          size="small"
-          onChange={(e, v) => {
-            if (v !== null) setOptions({ ...options, collapsed: v });
-          }}
-          exclusive
-        >
-          <ToggleButton value={true}>
-            <UnfoldLess fontSize="small"></UnfoldLess> Collapse
-          </ToggleButton>
-          <ToggleButton value={false}>
-            <UnfoldMore fontSize="small"></UnfoldMore>Expand
-          </ToggleButton>
-        </ToggleButtonGroup>
+      <Box pt={2} pb={2}>
+        {" "}
+        <Grid container style={{ justifyContent: "space-between" }}>
+          <Grid item>
+            <Box pb={2} style={{ float: "left" }}>
+              {view ? (
+                <ButtonGroup variant="contained" color="primary">
+                  <Button startIcon={<Edit />} onClick={handleEdit}>
+                    Edit
+                  </Button>
+                  <Button startIcon={<Restore />} onClick={handleReset}>
+                    Reset
+                  </Button>
+                </ButtonGroup>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<Visibility />}
+                  onClick={handleView}
+                  disabled={json === ""}
+                >
+                  View JSON
+                </Button>
+              )}
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box pb={2} style={{ float: "right" }}>
+              <ToggleButtonGroup
+                value={options.collapsed}
+                size="small"
+                onChange={(e, v) => {
+                  if (v !== null) setOptions({ ...options, collapsed: v });
+                }}
+                exclusive
+              >
+                <ToggleButton value={true}>
+                  <UnfoldLess fontSize="small"></UnfoldLess> Collapse
+                </ToggleButton>
+                <ToggleButton value={false}>
+                  <UnfoldMore fontSize="small"></UnfoldMore>Expand
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
       {view ? (
-        <Box mt={10} style={{ fontSize: "1.2rem", float: "clear" }}>
+        <Box style={{ fontSize: "1.2rem", float: "clear" }}>
           {obj && !invalid ? (
             <ReactJson
               displayDataTypes={false}

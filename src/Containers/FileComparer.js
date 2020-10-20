@@ -111,47 +111,56 @@ const FileComparer = (props) => {
         </Grid>
       </Box>
       <Box pt={3} pb={3}>
-        <Box style={{ float: "left" }}>
-          {checkDiff ? (
-            <ButtonGroup variant="contained" color="primary">
-              <Button onClick={handleEdit} startIcon={<Edit></Edit>}>
-                Edit
-              </Button>
-              <Button onClick={handleSwap} startIcon={<SwapHoriz></SwapHoriz>}>
-                Swap
-              </Button>
-              <Button onClick={handleReset} startIcon={<Restore></Restore>}>
-                Reset
-              </Button>
-            </ButtonGroup>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleCheckDiff}
-              disabled={!firstFile && !secondFile}
-            >
-              Check Difference
-            </Button>
-          )}
-        </Box>
-        <Box style={{ float: "right" }}>
-          <ToggleButtonGroup
-            value={viewType}
-            size="small"
-            onChange={(e, v) => {
-              if (v !== null) setViewType(v);
-            }}
-            exclusive
-          >
-            <ToggleButton value="split">
-              <VerticalSplit fontSize="small"></VerticalSplit> Split
-            </ToggleButton>
-            <ToggleButton value="unified">
-              <HorizontalSplit fontSize="small"></HorizontalSplit>Unified
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Box>
+        <Grid container style={{ justifyContent: "space-between" }}>
+          <Grid item>
+            <Box pb={1}>
+              {checkDiff ? (
+                <ButtonGroup variant="contained" color="primary">
+                  <Button onClick={handleEdit} startIcon={<Edit></Edit>}>
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={handleSwap}
+                    startIcon={<SwapHoriz></SwapHoriz>}
+                  >
+                    Swap
+                  </Button>
+                  <Button onClick={handleReset} startIcon={<Restore></Restore>}>
+                    Reset
+                  </Button>
+                </ButtonGroup>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleCheckDiff}
+                  disabled={!firstFile && !secondFile}
+                >
+                  Check Difference
+                </Button>
+              )}
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box pb={1}>
+              <ToggleButtonGroup
+                value={viewType}
+                size="small"
+                onChange={(e, v) => {
+                  if (v !== null) setViewType(v);
+                }}
+                exclusive
+              >
+                <ToggleButton value="split">
+                  <VerticalSplit fontSize="small"></VerticalSplit> Split
+                </ToggleButton>
+                <ToggleButton value="unified">
+                  <HorizontalSplit fontSize="small"></HorizontalSplit>Unified
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
 
       <Box pt={5} pb={2}>

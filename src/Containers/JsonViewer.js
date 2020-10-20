@@ -54,10 +54,11 @@ const JsonViewer = (props) => {
   };
   return (
     <Box p={3}>
+    
       <Grid container>
         <Box pb={2}>
           <Typography variant="subtitle1" color="textSecondary">
-            This app to not upload your data or store it anywhere. So feel free
+            This app do not upload your data or store it anywhere. So feel free
             to paste senstive data.
           </Typography>
         </Box>
@@ -92,6 +93,7 @@ const JsonViewer = (props) => {
             color="primary"
             startIcon={<Visibility />}
             onClick={handleView}
+            disabled={json === ""}
           >
             View JSON
           </Button>

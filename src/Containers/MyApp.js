@@ -1,4 +1,4 @@
-import React, { Component, lazy } from "react";
+import React, { Component, Suspense, lazy } from "react";
 import {
   Redirect,
   Route,
@@ -6,17 +6,19 @@ import {
   Switch,
 } from "react-router-dom";
 
-import Board from "../Components/Todo/Board";
 import { Box } from "@material-ui/core";
-import ConfirmationDialog from "../Components/ConfirmationDialog";
 import Drawer from "../Components/Drawer";
-import Editor from "./Editor";
-import FileComparer from "./FileComparer";
-import JsonViewer from "./JsonViewer";
+import FullPageLoader from "../Components/FullPageLoader";
 import Library from "./Library";
+import AppHome from "./AppHome";
 import { createBrowserHistory } from "history";
 import { saveAs } from "file-saver";
 import { withSnackbar } from "notistack";
+
+const Board = lazy(() => import("../Components/Todo/Board"));
+const Editor = lazy(() => import("./Editor"));
+const FileComparer = lazy(() => import("./FileComparer"));
+const JsonViewer = lazy(() => import("./JsonViewer"));
 
 const browserHistory = createBrowserHistory();
 
@@ -169,70 +171,73 @@ class MyApp extends Component {
           style={{ display: "none" }}
           accept=".json"
         ></input>
-        <Router history={browserHistory}>
-          <Drawer
-            {...this.props}
-            notes={this.state.notes}
-            onRename={this.handleRename}
-            onAddPage={this.handleAddPage}
-            onDeletePage={this.handleDeletePage}
-          >
-            <Switch>
-              <Redirect exact from="/" to="/todo"></Redirect>
-              <Route path="/todo" exact component={TodoPage}></Route>
-              <Route
-                path="/filecompare"
-                exact
-                render={() => <FileComparer isDark={this.props.isDark} />}
-              ></Route>
-              <Route
-                path="/jsonviewer"
-                exact
-                render={() => <JsonViewer isDark={this.props.isDark} />}
-              ></Route>
-              <Route
-                path="/notes/files/*"
-                render={(props) => (
-                  <Library
-                    {...props}
-                    notes={this.state.notes}
-                    onRename={this.handleRename}
-                    onAddPage={this.handleAddPage}
-                    onDeletePage={this.handleDeletePage}
-                    export={this.exportNotes}
-                    import={this.importNotes}
-                  />
-                )}
-              ></Route>
-              <Route
-                path="/notes/files"
-                render={(props) => (
-                  <Library
-                    {...props}
-                    notes={this.state.notes}
-                    onRename={this.handleRename}
-                    onAddPage={this.handleAddPage}
-                    onDeletePage={this.handleDeletePage}
-                    export={this.exportNotes}
-                    import={this.importNotes}
-                  />
-                )}
-              ></Route>
-              <Route
-                path="/notes/:id"
-                render={(props) => (
-                  <Editor
-                    notes={this.state.notes}
-                    onChange={this.handleChange}
-                    {...props}
-                  />
-                )}
-                exact
-              ></Route>
-              <Redirect from="/" to="/todo"></Redirect>
-            </Switch>
-          </Drawer>
-        </Router>
+        <Suspense fallback={<FullPageLoader />}>
+          <Router history={browserHistory}>
+            <Drawer
+              {...this.props}
+              notes={this.state.notes}
+              onRename={this.handleRename}
+              onAddPage={this.handleAddPage}
+              onDeletePage={this.handleDeletePage}
+            >
+              <Switch>
+                <Redirect exact from="/" to="/apphome"></Redirect>
+                <Route path='/apphome' exact component={AppHome}></Route>
+                <Route path="/todo" exact component={TodoPage}></Route>
+                <Route
+                  path="/filecompare"
+                  exact
+                  render={() => <FileComparer isDark={this.props.isDark} />}
+                ></Route>
+                <Route
+                  path="/jsonviewer"
+                  exact
+                  render={() => <JsonViewer isDark={this.props.isDark} />}
+                ></Route>
+                <Route
+                  path="/notes/files/*"
+                  render={(props) => (
+                    <Library
+                      {...props}
+                      notes={this.state.notes}
+                      onRename={this.handleRename}
+                      onAddPage={this.handleAddPage}
+                      onDeletePage={this.handleDeletePage}
+                      export={this.exportNotes}
+                      import={this.importNotes}
+                    />
+                  )}
+                ></Route>
+                <Route
+                  path="/notes/files"
+                  render={(props) => (
+                    <Library
+                      {...props}
+                      notes={this.state.notes}
+                      onRename={this.handleRename}
+                      onAddPage={this.handleAddPage}
+                      onDeletePage={this.handleDeletePage}
+                      export={this.exportNotes}
+                      import={this.importNotes}
+                    />
+                  )}
+                ></Route>
+                <Route
+                  path="/notes/:id"
+                  render={(props) => (
+                    <Editor
+                      notes={this.state.notes}
+                      onChange={this.handleChange}
+                      {...props}
+                    />
+                  )}
+                  exact
+                ></Route>
+                <Redirect from="/" to="/todo"></Redirect>
+              </Switch>
+            </Drawer>
+          </Router>
+        </Suspense>
       </>
     );
   }

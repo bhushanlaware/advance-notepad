@@ -73,7 +73,7 @@ const FileComparer = (props) => {
       <Box pt={2}>
         <Box pb={2}>
           <Typography variant="subtitle1" color="textSecondary">
-            This app to not upload your data or store it anywhere. So feel free
+            This app do not upload your data or store it anywhere. So feel free
             to paste senstive data.
           </Typography>
         </Box>

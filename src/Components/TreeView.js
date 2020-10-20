@@ -2,8 +2,10 @@ import {
   Add,
   Book,
   CheckCircle,
+  CodeOutlined,
   CompareArrowsOutlined,
   Delete,
+  Home,
   MoreVert,
   Visibility,
 } from "@material-ui/icons";
@@ -305,6 +307,40 @@ const AddAllNotes = (
     ));
   }
 };
+const appList = [
+  {
+    labelText: "Home",
+    labelIcon: Home,
+    to: "/apphome",
+    color: "#2186e6",
+    nodeId: 1,
+    bgColor: "#e0efff",
+  },
+  {
+    labelText: "Todo",
+    labelIcon: DoneOutlineIcon,
+    to: "/todo",
+    color: "#e3742f",
+    nodeId: 2,
+    bgColor: "#fff2e1",
+  },
+  {
+    labelText: "File Comparer",
+    labelIcon: CompareArrowsOutlined,
+    to: "/filecompare",
+    color: "#00c3a8",
+    nodeId: 3,
+    bgColor: "#ecfff9",
+  },
+  {
+    labelText: "Json Viewer",
+    labelIcon: CodeOutlined,
+    to: "/jsonviewer",
+    color: "#00c332",
+    nodeId: 4,
+    bgColor: "#ecffee",
+  },
+];
 export default React.memo((props) => {
   const classes = useStyles();
   const location = useLocation();
@@ -352,20 +388,19 @@ export default React.memo((props) => {
         }}
         expanded={expanded}
       >
-        <StyledTreeItem
-          selected={location.pathname.includes("todo")}
-          to="/todo"
-          nodeId="1"
-          labelText="Todo"
-          labelIcon={DoneOutlineIcon}
-          color="#e3742f"
-          bgColor={
-            theme.palette.type === "dark"
-              ? theme.palette.background.default
-              : "#fcefe3"
-          }
-        />
-        <StyledTreeItem
+        {appList.map((x) => (
+          <StyledTreeItem
+            selected={location.pathname.includes(x.to)}
+            {...x}
+            bgColor={
+              theme.palette.type === "dark"
+                ? theme.palette.background.default
+                : x.bgColor
+            }
+          />
+        ))}
+
+        {/* <StyledTreeItem
           selected={location.pathname.includes("filecompare")}
           to="/filecompare"
           nodeId="121"
@@ -390,7 +425,7 @@ export default React.memo((props) => {
               ? theme.palette.background.default
               : "#ecffee"
           }
-        />
+        /> */}
         <StyledTreeItem
           nodeId="Main"
           labelText="Notes"

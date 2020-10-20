@@ -1,7 +1,7 @@
 import "./index.css";
 
 import App from "./App";
-import JsonViewer from "./Containers/JsonViewer";
+import Home from "./Containers/Home";
 import React from "react";
 import ReactDOM from "react-dom";
 import { SnackbarProvider } from "notistack";

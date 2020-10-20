@@ -13,14 +13,18 @@ const appList = [
   },
   { title: "Json Viewer", image: "/icons/code.svg", path: "/jsonviewer" },
   { title: "Notes", image: "/icons/notebook-app.svg", path: "/notes/files" },
+  {
+    title: "Image Compressor",
+    image: "/icons/imageapp.svg",
+    path: "https://compressimage.app",
+  },
 ];
 const AppHome = (props) => {
   return (
     <Box p={4}>
       <Box pb={1}>
         <Typography variant={"body1"} color="textSecondary">
-          <Apps style={{ float: "left" }} color="primary" />
-          Apps
+          <Apps style={{ float: "left" }} color="primary" /> &nbsp; Apps
         </Typography>
       </Box>
       <Divider />

@@ -14,7 +14,8 @@ export default function AppCard({ image, title, path }) {
         <Card elevation={0}>
           <CardActionArea
             onClick={(e) => {
-              history.push(path);
+              if (!path.includes("http")) history.push(path);
+              else window.location.href = path;
             }}
           >
             <CardMedia

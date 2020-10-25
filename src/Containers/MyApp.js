@@ -123,28 +123,46 @@ class MyApp extends Component {
   componentWillUnmount = () => {
     document.removeEventListener("keydown", this.handleKeyPress);
   };
-  componentDidUpdate = () => {
-    localStorage.setItem("notes", JSON.stringify(this.state.notes));
-  };
+  componentDidUpdate = () => {};
+
   handleAddPage = (parentId, title) => {
     const book = new Book(parentId, title);
     const newNotes = [...this.state.notes, book];
     if (parentId !== "Main")
       newNotes[newNotes.findIndex((x) => x.id === parentId)].childs++;
     this.setState({ notes: newNotes });
+    this.updateLocalStorage(newNotes);
+
     return book.id;
   };
   handleDeletePage = (id) => {
-    const newNotes = this.state.notes.filter((x) => x.id !== id);
-    const parentId = this.state.notes[
-      this.state.notes.findIndex((x) => x.id === id)
-    ].parent;
-    if (parentId !== "Main") {
-      newNotes[newNotes.findIndex((x) => x.id === parentId)].childs--;
+    let newNotes = [];
+
+    //if id is not main
+    if (id !== "Main") {
+      const allChilds = this.getAllChilds(id);
+      newNotes = this.state.notes.filter((x) => !allChilds.includes(x));
+      newNotes = newNotes.filter((x) => x.id !== id);
+      const parentId = this.state.notes[
+        this.state.notes.findIndex((x) => x.id === id)
+      ].parent;
+      if (parentId !== "Main") {
+        newNotes[newNotes.findIndex((x) => x.id === parentId)].childs--;
+      }
+    } else {
+      newNotes = [];
     }
     this.setState({ notes: newNotes });
+    this.updateLocalStorage(newNotes);
   };
 
+  getAllChilds = (id) => {
+    const childs = this.state.notes.filter((x) => x.parent === id);
+    if (childs.length) {
+      childs.forEach((x) => childs.push(...this.getAllChilds(x.id)));
+    }
+    return childs;
+  };
   handleRename = (id, title, rewriteHeading = false) => {
     if (title === "") return;
     const tempNotes = [...this.state.notes];
@@ -152,6 +170,7 @@ class MyApp extends Component {
 
     tempNotes[index].title = title;
     this.setState({ notes: tempNotes });
+    this.updateLocalStorage(tempNotes);
   };
   handleChange = (id, text) => {
     const tempNotes = [...this.state.notes];
@@ -159,6 +178,10 @@ class MyApp extends Component {
     if (index < 0) return;
     tempNotes[index].notes = text;
     this.setState({ notes: tempNotes });
+    this.updateLocalStorage(tempNotes);
+  };
+  updateLocalStorage = (notes) => {
+    localStorage.setItem("notes", JSON.stringify(notes));
   };
 
   render() {

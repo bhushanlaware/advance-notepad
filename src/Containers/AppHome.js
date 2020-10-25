@@ -3,19 +3,23 @@ import { Box, Button, Divider, Grid, Typography } from "@material-ui/core";
 import AppCard from "../Components/AppCard";
 import { Apps } from "@material-ui/icons";
 import React from "react";
-
+import TodoIcon from "../icons/mstodo.svg";
+import CodeIcon from "../icons/code.svg";
+import NoteBookIcon from "../icons/notebook-app.svg";
+import ImageApp from "../icons/imageapp.svg";
+import FileCompareIcon from "../icons/filecompare-app.svg";
 const appList = [
-  { title: "Todo", image: "/icons/mstodo.svg", path: "/todo" },
+  { title: "Todo", image: TodoIcon, path: "/todo" },
   {
     title: "File Comparer",
-    image: "/icons/filecompare-app.svg",
+    image: FileCompareIcon,
     path: "/filecompare",
   },
-  { title: "Json Viewer", image: "/icons/code.svg", path: "/jsonviewer" },
-  { title: "Notes", image: "/icons/notebook-app.svg", path: "/notes/files" },
+  { title: "Json Viewer", image: CodeIcon, path: "/jsonviewer" },
+  { title: "Notes", image: NoteBookIcon, path: "/notes/files" },
   {
     title: "Image Compressor",
-    image: "/icons/imageapp.svg",
+    image: ImageApp,
     path: "https://compressimage.app",
   },
 ];

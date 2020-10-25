@@ -1,25 +1,24 @@
 import { Avatar, Box, Menu, MenuItem } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import DarkMode from "@material-ui/icons/Brightness4";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import MailIcon from "@material-ui/icons/Mail";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import DarkMode from "@material-ui/icons/Brightness4";
 import MenuIcon from "@material-ui/icons/Menu";
 import PropTypes from "prop-types";
 import React from "react";
-import Toolbar from "@material-ui/core/Toolbar";
+import Logo from "../images/logo.png";
+import DarkLogo from "../icons/darklogo.svg";
 import TreeView from "./TreeView";
-import Typography from "@material-ui/core/Typography";
 
 const drawerWidth = 240;
 
@@ -135,7 +134,7 @@ function ResponsiveDrawer(props) {
         <Box alignItems="center" display="flex" flexDirection="column" p={2}>
           <Avatar
             className={classes.avatar}
-            src={props.isDark ? "/darklogo.svg" : "/android-chrome-192x192.png"}
+            src={props.isDark ? DarkLogo : Logo}
             to="/"
           />
           <Typography className={classes.name} color="textPrimary" variant="h6">

@@ -1,7 +1,7 @@
 import "./index.css";
 
 import App from "./App";
-import Home from "./Containers/Home";
+import JsEditor from "./Containers/JsEditor";
 import React from "react";
 import ReactDOM from "react-dom";
 import { SnackbarProvider } from "notistack";

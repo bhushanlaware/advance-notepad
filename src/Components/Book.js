@@ -19,6 +19,9 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import OpenBookIcon from "../icons/book2.svg";
+import CloseBookIcon from "../icons/close-book.svg";
+import NoteIcon from "../icons/note.svg";
 
 const useStyles = makeStyles({
   root: {
@@ -172,11 +175,7 @@ export default function BookCard({
               <CardMedia
                 className={classes.media}
                 image={
-                  isHomePage
-                    ? "/icons/book2.svg"
-                    : isPage
-                    ? "/icons/note.svg"
-                    : "/icons/close-book.svg"
+                  isHomePage ? OpenBookIcon : isPage ? NoteIcon : CloseBookIcon
                 }
                 title="Open Pages"
                 style={{

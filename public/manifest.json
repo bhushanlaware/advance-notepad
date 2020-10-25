@@ -18,8 +18,45 @@
       "sizes": "512x512"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Todo",
+      "short_name": "Todo",
+      "description": "Keep calm and list down tasks.",
+      "url": "/todo",
+      "icons": [{ "src": "/icons/mstodo.svg", "sizes": "150x150" }]
+    },
+    {
+      "name": "File Comparer",
+      "short_name": "File Comparer",
+      "description": "Comapare files while keeping sensetive data secure.",
+      "url": "/filecompare",
+      "icons": [{ "src": "/icons/filecompare-app.svg", "sizes": "150x150" }]
+    },
+    {
+      "name": "Json Viewer",
+      "short_name": "Json Viewer",
+      "description": "Parse json while keeping sensetive data secure.",
+      "url": "/jsonviewer",
+      "icons": [{ "src": "/icons/code.svg", "sizes": "150x150" }]
+    },
+    {
+      "name": "Notes",
+      "short_name": "Notes",
+      "description": "Take notes and save them offline.",
+      "url": "/notes/files",
+      "icons": [{ "src": "/icons/notebook-app.svg", "sizes": "150x150" }]
+    },
+    {
+      "name": "Image Compressor",
+      "short_name": "Image Compressor",
+      "description": "Compress image offline without uploading and save them as zip or PDF.",
+      "url": "https://compressimage.app/",
+      "icons": [{ "src": "/icons/imageapp.svg", "sizes": "150x150" }]
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#F5F5F5",
+  "background_color": "#F5F5F5"
 }

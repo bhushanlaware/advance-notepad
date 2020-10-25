@@ -182,7 +182,7 @@ class MyApp extends Component {
             >
               <Switch>
                 <Redirect exact from="/" to="/apphome"></Redirect>
-                <Route path='/apphome' exact component={AppHome}></Route>
+                <Route path="/apphome" exact component={AppHome}></Route>
                 <Route path="/todo" exact component={TodoPage}></Route>
                 <Route
                   path="/filecompare"

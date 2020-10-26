@@ -173,14 +173,19 @@ class MyApp extends Component {
     this.updateLocalStorage(tempNotes);
   };
   handleChange = (id, text) => {
+    debugger;
     const tempNotes = [...this.state.notes];
     const index = tempNotes.findIndex((x) => x.id === id);
     if (index < 0) return;
-    tempNotes[index].notes = text;
+    tempNotes[index].notes = text.replace(
+      /<p><br><\/p><p><br><\/p>/g,
+      "<p><br><p>"
+    );
     this.setState({ notes: tempNotes });
     this.updateLocalStorage(tempNotes);
   };
   updateLocalStorage = (notes) => {
+    debugger;
     localStorage.setItem("notes", JSON.stringify(notes));
   };
 

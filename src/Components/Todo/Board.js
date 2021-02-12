@@ -5,6 +5,7 @@ import { Add } from "@material-ui/icons";
 import ConfirmationDialog from "../ConfirmationDialog";
 import TodoCard from "./TodoCard";
 import { makeStyles } from "@material-ui/core/styles";
+import TodoAds from "../GoogleAds/TodoAds";
 
 const useStyle = makeStyles((theme) => ({
   floatingBtn: {
@@ -108,6 +109,7 @@ const Board = () => {
         </Box>
       ) : (
         <div container className={classes.container}>
+          <TodoAds></TodoAds>
           {cards.map((x, i) => (
             <Zoom
               in={!x.delete}

@@ -54,6 +54,7 @@
     "postcss-safe-parser": "4.0.1",
     "prismjs": "^1.22.0",
     "react": "^16.13.1",
+    "react-adsense": "^0.1.0",
     "react-app-polyfill": "^1.0.6",
     "react-beautiful-dnd": "^13.0.0",
     "react-code-box": "^1.1.2",

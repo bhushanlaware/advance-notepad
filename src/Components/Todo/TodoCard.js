@@ -92,14 +92,6 @@ export default function TodoCard(props) {
         ></Todo>
       </CardContent>
       <CardActions style={{ float: "right" }}>
-        {/* <Button
-          size="small"
-          color="primary"
-          variant="outlined"
-          onClick={() => clearCompleted()}
-        >
-          Add
-        </Button> */}
         <Button
           size="small"
           color="secondary"
@@ -109,9 +101,6 @@ export default function TodoCard(props) {
         >
           Clear Completed
         </Button>
-        {/* <Button size="small" color="secondary" onClick={() => clearAll()}>
-          Clear All
-        </Button> */}
       </CardActions>
     </Card>
   );

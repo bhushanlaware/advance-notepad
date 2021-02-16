@@ -1,11 +1,10 @@
-import { Box, Container, Fab, Grid, Typography, Zoom } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-
 import { Add } from "@material-ui/icons";
+import { Box, Fab, Typography, Zoom } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { IndexedDB } from '../../utils/IndexDB';
+import React, { useEffect, useState } from "react";
 import ConfirmationDialog from "../ConfirmationDialog";
 import TodoCard from "./TodoCard";
-import { makeStyles } from "@material-ui/core/styles";
-import TodoAds from "../GoogleAds/TodoAds";
 
 const useStyle = makeStyles((theme) => ({
   floatingBtn: {
@@ -43,12 +42,14 @@ const Board = () => {
   const classes = useStyle();
   const [cards, setCards] = useState([]);
   const [deleteCard, setDeleteCard] = useState(false);
+  const [indexDB, setIndexDB] = useState(null);
 
   useEffect(() => {
     let localCards = localStorage.getItem("cards");
     localCards = localCards ? localCards : "[]";
     setCards(JSON.parse(localCards));
     // setCards(JSON.parse(localStorage.getItem("cards") || "") || []);
+    setIndexDB(new IndexedDB());
   }, []);
 
   useEffect(() => {
@@ -83,20 +84,10 @@ const Board = () => {
     setCards(newCards);
     setDeleteCard(false);
   };
-  const handleAddCard = () => {
+  const handleAddCard =async () => {
     setCards([...cards, { id: getId(), title: "Todo" }]);
+  //  await indexDB.insertTableRecord('TODOS',{ id: getId(), title: "Todo" })
   };
-  // const handleRemoveCa74rd = (i) => {
-  //   const newCards = [...cards];
-  //   newCards.splice(i, 1);
-  //   setCards(newCards);
-  // };
-  // const handleAddCard = () => {
-  //   setCards([
-  //     ...cards,
-  //     <TodoCard index={cards.length} onRemoveCard={handleRemoveCard} />,
-  //   ]);
-  // };
 
   return (
     <>
@@ -108,34 +99,28 @@ const Board = () => {
           </Typography>
         </Box>
       ) : (
-        <div container className={classes.container}>
-          <TodoAds></TodoAds>
-          {cards.map((x, i) => (
-            <Zoom
-              in={!x.delete}
-              mountOnEnter
-              unmountOnExit
-              onExited={() => {
-                handleRemoveCard(x.id);
-              }}
-            >
-              <div item className={classes.item} key={x.id}>
-                <TodoCard
-                  id={x.id}
-                  removeCard={handleDelete}
-                  title={x.title}
-                  setTitle={handleSetTitle}
-                />
-              </div>
-            </Zoom>
-          ))}
-        </div>
-      )}
-      {/* <IconButton
-        aria-label="Add Todo"
-        size="medium"
-        className={classes.floatingBtn}
-      ></IconButton> */}
+          <div container className={classes.container}>
+            {cards.map((x, i) => (
+              <Zoom
+                in={!x.delete}
+                mountOnEnter
+                unmountOnExit
+                onExited={() => {
+                  handleRemoveCard(x.id);
+                }}
+              >
+                <div item className={classes.item} key={x.id}>
+                  <TodoCard
+                    id={x.id}
+                    removeCard={handleDelete}
+                    title={x.title}
+                    setTitle={handleSetTitle}
+                  />
+                </div>
+              </Zoom>
+            ))}
+          </div>
+        )}
       <Fab
         color="secondary"
         aria-label="add"

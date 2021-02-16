@@ -52,7 +52,7 @@ export default React.memo((props) => {
   const [current, setCurrent] = useState([]);
   const [completed, setCompleted] = useState([]);
   const { id } = props;
-  console.log("refresded", id);
+  // console.log("refresded", id);
   const clearAll = () => {
     setCurrent([]);
     setCompleted([]);

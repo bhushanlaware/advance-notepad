@@ -49,7 +49,10 @@ const Board = () => {
     localCards = localCards ? localCards : "[]";
     setCards(JSON.parse(localCards));
     // setCards(JSON.parse(localStorage.getItem("cards") || "") || []);
-    setIndexDB(new IndexedDB());
+    const db = new IndexedDB();
+    db.init();
+    setIndexDB(db);
+
   }, []);
 
   useEffect(() => {
@@ -68,11 +71,12 @@ const Board = () => {
   const handleDelete = (id) => {
     setDeleteCard(id);
   };
-  const handleRemoveCard = (id) => {
-    const newCards = cards.filter((x) => x.id !== id);
+  const handleRemoveCard = (card) => {
+    const newCards = cards.filter((x) => x.id !== card.id);
+    indexDB.deleteRecord('TODOS', card.key).then(_ => console.log('deleted'));
     setCards([...newCards]);
-    localStorage.removeItem("current" + id);
-    localStorage.removeItem("completed" + id);
+    localStorage.removeItem("current" + card.id);
+    localStorage.removeItem("completed" + card.id);
   };
   const onDeleteConfirm = () => {
     const newCards = cards.map((x) => {
@@ -84,9 +88,9 @@ const Board = () => {
     setCards(newCards);
     setDeleteCard(false);
   };
-  const handleAddCard =async () => {
-    setCards([...cards, { id: getId(), title: "Todo" }]);
-  //  await indexDB.insertTableRecord('TODOS',{ id: getId(), title: "Todo" })
+  const handleAddCard = async () => {
+    const key = await indexDB.insertTableRecord('TODOS', { id: getId(), title: "Todo" })
+    setCards([...cards, { id: getId(), title: "Todo", key }]);
   };
 
   return (
@@ -106,7 +110,7 @@ const Board = () => {
                 mountOnEnter
                 unmountOnExit
                 onExited={() => {
-                  handleRemoveCard(x.id);
+                  handleRemoveCard(x);
                 }}
               >
                 <div item className={classes.item} key={x.id}>

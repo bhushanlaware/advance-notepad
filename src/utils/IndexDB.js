@@ -75,7 +75,7 @@ export class IndexedDB {
         let os = trans.objectStore(TableName);
         let req = os.add(data);
         req.onsuccess = event => {
-          // console.log('Success', event.target.result);
+          console.log('Success', event.target.result);
           resolve(event.target.result);
         };
         req.onerror = event => {

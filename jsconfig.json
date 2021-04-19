@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@component": ["./src/Components/*"],
+      "@containers": ["./src/Containers/*"],
+      "@utils": ["./src/Utils/*"],
+      "@themes": ["./src/Themes/*"],
+      "@icons": ["./src/icons/*"],
+      "@images": ["./src/images/*"],
+      "@hooks": ["./src/Hooks/*"],
+      "@store": ["./src/Store/*"],
+      "@actionsTypes": ["./src/Store/Actions/ActionTypes"],
+      "@actions": ["./src/Store/Actions/actions/*"],
+      "@models": ["./src/Models"]
+    }
+  }
+}

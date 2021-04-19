@@ -89,7 +89,7 @@ const Board = () => {
     setDeleteCard(false);
   };
   const handleAddCard = async () => {
-    const key = await indexDB.insertTableRecord('TODOS', { id: getId(), title: "Todo" })
+    const key = await indexDB.insertTableRecord('TODOS', { id: getId(), title: "Todo", todos: [], completed: [] });
     setCards([...cards, { id: getId(), title: "Todo", key }]);
   };
 
@@ -103,28 +103,28 @@ const Board = () => {
           </Typography>
         </Box>
       ) : (
-          <div container className={classes.container}>
-            {cards.map((x, i) => (
-              <Zoom
-                in={!x.delete}
-                mountOnEnter
-                unmountOnExit
-                onExited={() => {
-                  handleRemoveCard(x);
-                }}
-              >
-                <div item className={classes.item} key={x.id}>
-                  <TodoCard
-                    id={x.id}
-                    removeCard={handleDelete}
-                    title={x.title}
-                    setTitle={handleSetTitle}
-                  />
-                </div>
-              </Zoom>
-            ))}
-          </div>
-        )}
+        <div container className={classes.container}>
+          {cards.map((x, i) => (
+            <Zoom
+              in={!x.delete}
+              mountOnEnter
+              unmountOnExit
+              onExited={() => {
+                handleRemoveCard(x);
+              }}
+            >
+              <div item className={classes.item} key={x.id}>
+                <TodoCard
+                  id={x.id}
+                  removeCard={handleDelete}
+                  title={x.title}
+                  setTitle={handleSetTitle}
+                />
+              </div>
+            </Zoom>
+          ))}
+        </div>
+      )}
       <Fab
         color="secondary"
         aria-label="add"

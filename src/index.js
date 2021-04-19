@@ -1,13 +1,14 @@
-import "./index.css";
-
-import App from "./App";
-import JsEditor from "./Containers/JsEditor";
+import store from "@store";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
-import { SnackbarProvider } from "notistack";
+import { Provider } from 'react-redux';
+import App from "./App";
+import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
+    <Provider store={store}>
     <SnackbarProvider
       anchorOrigin={{
         vertical: "top",
@@ -16,6 +17,7 @@ ReactDOM.render(
     >
       <App />
     </SnackbarProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
